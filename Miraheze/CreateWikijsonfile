@@ -24,3 +24,4 @@
 	"logentry-farmer-create": "$1 created the wiki \"$4\"",
 	"logentry-farmer-createandpromote": "$1 created the wiki \"$4\" with \"$5\" as founder"
 }
+
