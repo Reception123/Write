@@ -1,9 +1,9 @@
  \\ Inspired by Southparkfan's RequestWiki 
 <?php
-class SpecialRequestWiki extends SpecialPage {
+class SpecialRequesFeatures extends SpecialPage {
 	private $errors = false;
 	function __construct() {
-		parent::__construct( 'RequestWiki' );
+		parent::__construct( 'RequestFeatures' );
 	}
 	function execute( $par ) {
 		$request = $this->getRequest();
@@ -35,18 +35,11 @@ class SpecialRequestWiki extends SpecialPage {
 	function addRequestWikiForm() {
 		$localpage = $this->getPageTitle()->getLocalUrl();
 		$form = Xml::openElement( 'form', array( 'action' => $localpage, 'method' => 'post' ) );
-		$form .= '<fieldset><legend>' . $this->msg( 'requestwiki' )->escaped() . '</legend>';
+		$form .= '<fieldset><legend>' . $this->msg( 'requestfeatures' )->escaped() . '</legend>';
 		$form .= Xml::openElement( 'table' );
 		$form .= '<tr><td>' . $this->msg( 'requestwiki-label-siteurl' )->escaped() . '</td>';
 		$form .= '<td>' . Xml::input( 'subdomain', 20, '' ) . '.miraheze.org' . '</td></tr>';
 		$form .= '<tr><td>' . $this->msg( 'requestwiki-label-sitename' )->escaped() . '</td>';
-		$form .= '<td>' . Xml::input( 'sitename', 20, '', array( 'required' => '' ) ) . '</td></tr>';
-		$form .= '<tr><td>' . $this->msg( 'requestwiki-label-customdomain' )->escaped() . '</td>';
-		$form .= '<td>' . Xml::input( 'customdomain', 20, '' ) . '</td></tr>';
-		$form .= '<tr><td>' . $this->msg( 'requestwiki-label-language' )->escaped() . '</td>';
-		$form .= '<td>' . Xml::languageSelector( 'en', true, null, array( 'name' => 'language' ) )[1]  . '</td></tr>';
-		$form .= '<tr><td>' . $this->msg( 'requestwiki-label-private' )->escaped() . '</td>';
-		$form .= '<td>' . Xml::check( 'private', false, array( 'value' => 0 ) ) . '</td></tr>';
 		$form .= '<tr><td>' . $this->msg( 'requestwiki-label-comments' )->escaped() . '</td>';
 		$form .= '<td>' . Xml::textarea( 'comments', '', 40, 5, array( 'required' => '' ) ) . '</td></tr>';
 		$form .= '<tr><td>' . Xml::submitButton( $this->msg( 'requestwiki-submit' )->plain() ) . '</td></tr>';
