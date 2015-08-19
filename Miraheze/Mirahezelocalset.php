@@ -404,7 +404,7 @@ $wgConf->settings = array(
 			),
 			'superadmin' => array(
 				'admin',
-			),
+	),		),
 		'+testwiki' => array(
 			'bureaucrat' => array(
 				'bureaucrat',
