@@ -414,7 +414,7 @@ $wgConf->settings = array(
 			'consul' => array(
 				'bot'
 				'bureaucrat'
-
+			),
 		),
 	),
 	'+wgGroupPermissions' => array(
