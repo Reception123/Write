@@ -839,3 +839,4 @@ if ( !in_array( $wgDBname, $wgLocalDatabases ) ) {
 EOF;
 	die( 1 );
 } 
+
