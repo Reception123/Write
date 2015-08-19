@@ -515,8 +515,6 @@ $wgConf->settings = array(
 			'consul' => array(
 				'read' => true,
 				'consul' = true,
-					),
-				),
 			),
 		),
 	),
