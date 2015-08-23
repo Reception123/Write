@@ -545,6 +545,9 @@ $wgConf->settings = array(
 				'read' => true,
 				'consul' => true,
 			),
+			'sysop' => array(
+				'massmessage' => true,
+			),
 		),
 	),
 	'wgGroupsRemoveFromSelf' => array(
