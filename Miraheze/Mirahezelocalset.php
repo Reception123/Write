@@ -149,6 +149,8 @@ $wgConf->settings = array(
 			"$IP/extensions/Math/db/math.mysql.sql",
 			"$IP/extensions/Math/db/mathlatexml.mysql.sql",
 			"$IP/extensions/Math/db/mathoid.mysql.sql",
+			"$IP/extensions/OAuth/backend/schema/mysql/OAuth.sql",
+			"$IP/extensions/OAuth/backend/schema/mysql/callback_is_prefix.sql",
 		        "$IP/extensions/Translate/sql/revtag.sql",
 		        "$IP/extensions/Translate/sql/translate_groupreviews.sql",
 		        "$IP/extensions/Translate/sql/translate_groupstats.sql",
@@ -186,14 +188,18 @@ $wgConf->settings = array(
 	'wgDeleteRevisionsLimit' => array(
 		'default' => '250', // databases don't have much memory - let's not overload them in future
 	),
-
+	// Disable anon editing
+	'wmgDisableAnonEditing' => array(
+		'default' => false,
+		'antiguabarbudacalypsowiki' => true,
+	),
+		if ( $wmgDisableAnonEditing ) {
+	$wgGroupPermissions['*']['edit'] = false;
+	$wgGroupPermissions['*']['createpage'] = false;
+		}
 	// Extensions
 	'wmgUseBabel' => array(
 		'default' => true,
-	),
-	'wmgUseWikiEditor' => array(
-		'default' => false,
-		'extloadwiki' => true,
 	),
 	'wmgUseCreateWiki' => array(
 		'default' => false,
@@ -231,7 +237,12 @@ $wgConf->settings = array(
 		'testwiki' => true,
 	),
 	'wmgUseVisualEditor' => array(
-		'default' => false, // Do not enable. -John
+		'default' => false, // Please consult John before changing variables here! -John
+		'extloadwiki' => true,
+		'spiralwiki' => true,
+	),
+	'wmgUseWikiEditor' => array(
+		'default' => true,
 	),
 
 	// Files
@@ -383,6 +394,17 @@ $wgConf->settings = array(
 		'quantixwiki' => array( NS_MAIN, NS_HL2RP, NS_ARP, NS_EVENT, NS_CLAN, NS_POE, NS_LEAGUE, NS_SMITE ),
 	),
 
+	// OAuth
+	'wgMWOAuthCentralWiki' => array(
+		'default' => 'metawiki',
+	),
+	'wgMWOAuthSharedUserSource' => array(
+		'default' => 'CentralAuth',
+	),
+	'wgMWOAuthSecureTokenTransfer' => array(
+		'default' => true,
+	),
+
 	// Permissions
 	'wgAddGroups' => array(
 		'default' => array(
@@ -398,6 +420,11 @@ $wgConf->settings = array(
 				'member',
 				'rollbacker',
 				'skipcaptcha',
+			),
+		),
+		'+dpwiki' => array(
+			'bureaucrat' => array(
+				'respected',
 			),
 		),
 		'+quantixwiki' => array(
@@ -450,6 +477,10 @@ $wgConf->settings = array(
 				'autopatrol' => true,
 				'patrol' => true,
 			),
+			'autoconfirmed' => array(
+				'mwoauthproposeconsumer' => true,
+				'mwoauthupdateownconsumer' => true,
+			),
 			'bureaucrat' => array(
 				'renameuser' => false,
 				'userrights' => false,
@@ -482,11 +513,19 @@ $wgConf->settings = array(
 				'abusefilter-revert' => true,
 				'deletelogentry' => true,
 				'deleterevision' => true,
-				'massmessage' => false,
 				'rollback' => true,
 			),
 			'user' => array(
 				'user' => true, // for "Allow logged in users" protection level
+			),
+		),
+		'+dpwiki' => array(
+			'bureaucrat' => array(
+				'bureaucrat' => true,
+				'respected' => true,
+			),
+			'respected' => array(
+				'respected' => true,
 			),
 		),
 		'+metawiki' => array(
@@ -568,6 +607,11 @@ $wgConf->settings = array(
 				'skipcaptcha',
 			),
 		),
+		'+dpwiki' => array(
+			'bureaucrat' => array(
+				'respected',
+			),
+		),
 		'+quantixwiki' => array(
 			'bureaucrat' => array(
 				'superadmin',
@@ -619,12 +663,16 @@ $wgConf->settings = array(
 		'default' => array(
 			'user',
 		),
-		'quantixwiki' => array(
+		'+dpwiki' => array(
+			'bureaucrat',
+			'respected',
+		),
+		'+quantixwiki' => array(
 			'bureaucrat',
 			'coder',
 			'owner',
 		),
-		'testwiki' => array(
+		'+testwiki' => array(
 			'bureaucrat',
 		),
 	),
@@ -681,7 +729,9 @@ $wgConf->settings = array(
 	),
 	'wgLogo' => array(
 		'default' => "//$wmgUploadHostname/metawiki/3/35/Miraheze_Logo.svg",
+		'mafiawiki' => "//$wmgUploadHostname/mafiawiki/a/a6/Header.png",
 		'spiralwiki' => '//upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Spiral_project_logo.svg/135px-Spiral_project_logo.svg.png',
+		'testwiki' => "//$wmgUploadHostname/testwiki/9/99/Mirahezetestwiki.png",
 	),
 
 	// Timezone
@@ -859,8 +909,25 @@ if ( isset( $wgCentralAuthAutoLoginWikis[$wmgHostname] ) ) {
 
 require_once( "/srv/mediawiki/config/LocalExtensions.php" );
 
+# Timeline
+putenv( "GDFONTPATH=/usr/share/fonts/truetype/freefont" );
+$wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
+$wgTimelineSettings->perlCommand = "/usr/bin/perl";
+$wgTimelineSettings->fontFile = 'FreeSans';
+
+# ReCaptcha
 $wgCaptchaClass = 'ReCaptchaNoCaptcha';
 $wgReCaptchaSendRemoteIP = false; // Don't send users' IPs
+
+# ircrcbot
+if ( !isset( $wgConf->settings['wmgPrivateWiki'][$wgDBname] ) ) {
+        $wgRCFeeds['irc'] = array(
+                'formatter' => 'MirahezeIRCRCFeedFormatter',
+                'uri' => 'udp://185.52.1.76:5070',
+                'add_interwiki_prefix' => false,
+                'omit_bots' => true,
+        );
+}
 
 $wgHooks['SkinAfterBottomScripts'][] = 'piwikScript';
 function piwikScript( $skin, &$text = '' ) {
