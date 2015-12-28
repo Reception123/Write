@@ -1,0 +1,10 @@
+** GLOBAL SITENOTICE HOOK **
+$wgHooks['SiteNoticeAfter'][] = 'onSiteNoticeAfter';
+function onSiteNoticeAfter( &$siteNotice, $skin ) {
+        $siteNotice .= <<<EOF
+<table class="wikitable" style="text-align:center;"><tbody><tr>
+<td>TEXT</a>.</p></td>
+</tr></tbody></table>
+EOF;
+        return true;
+}
