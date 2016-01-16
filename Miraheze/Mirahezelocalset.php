@@ -31,7 +31,7 @@ $wmgHostname = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : null;
 define( 'NS_TECH', 1600 );
 define( 'NS_TECH_TALK', 1601 );
 
-// QuantixWiki
+//QuantixWiki
 define( 'NS_HL2RP', 1602 );
 define( 'NS_HL2RP_TALK', 1603 );
 define( 'NS_ARP', 1604 );
@@ -40,12 +40,6 @@ define( 'NS_EVENT', 1606 );
 define( 'NS_EVENT_TALK', 1607 );
 define( 'NS_CLAN', 1608 );
 define( 'NS_CLAN_TALK', 1609 );
-define( 'NS_POE', 1610 );
-define( 'NS_POE_TALK', 1611 );
-define( 'NS_LEAGUE', 1612 );
-define( 'NS_LEAGUE_TALK', 1613 );
-define( 'NS_SMITE', 1614 );
-define( 'NS_SMITE_TALK', 1615 );
 
 $wgConf->settings = array(
 	// AbuseFilter
@@ -91,16 +85,6 @@ $wgConf->settings = array(
 			'store' => 'files',
 			'storeDirectory' => "$IP/cache/l10n",
 			'manualRecache' => true,
-		),
-	),
-	'wgResourceLoaderMaxage' => array(
-		'versioned' => array(
-			'server' => 30 * 24 * 60 * 60,
-			'client' => 30 * 24 * 60 * 60,
-		),
-		'unversioned' => array(
-			'server' => 20 * 60,
-			'client' => 20 * 60,
 		),
 	),
 
@@ -149,8 +133,6 @@ $wgConf->settings = array(
 			"$IP/extensions/Math/db/math.mysql.sql",
 			"$IP/extensions/Math/db/mathlatexml.mysql.sql",
 			"$IP/extensions/Math/db/mathoid.mysql.sql",
-			"$IP/extensions/OAuth/backend/schema/mysql/OAuth.sql",
-			"$IP/extensions/OAuth/backend/schema/mysql/callback_is_prefix.sql",
 		        "$IP/extensions/Translate/sql/revtag.sql",
 		        "$IP/extensions/Translate/sql/translate_groupreviews.sql",
 		        "$IP/extensions/Translate/sql/translate_groupstats.sql",
@@ -188,18 +170,14 @@ $wgConf->settings = array(
 	'wgDeleteRevisionsLimit' => array(
 		'default' => '250', // databases don't have much memory - let's not overload them in future
 	),
-	// Disable anon editing
-	'wmgDisableAnonEditing' => array(
-		'default' => false,
-		'antiguabarbudacalypsowiki' => true,
-	),
-		if ( $wmgDisableAnonEditing ) {
-	$wgGroupPermissions['*']['edit'] = false;
-	$wgGroupPermissions['*']['createpage'] = false;
-		}
+
 	// Extensions
 	'wmgUseBabel' => array(
 		'default' => true,
+	),
+	'wmgUseWikiEditor' => array(
+		'default' => false,
+		'extloadwiki' => true,
 	),
 	'wmgUseCreateWiki' => array(
 		'default' => false,
@@ -212,6 +190,7 @@ $wgConf->settings = array(
 	'wmgUseFlow' => array(
 		'default' => false,
 		'extloadwiki' => true,
+		'parsoidwiki' => true,
 		'spiralwiki' => true,
 		'spiraltestwiki' => true,
 	),
@@ -237,12 +216,7 @@ $wgConf->settings = array(
 		'testwiki' => true,
 	),
 	'wmgUseVisualEditor' => array(
-		'default' => false, // Please consult John before changing variables here! -John
-		'extloadwiki' => true,
-		'spiralwiki' => true,
-	),
-	'wmgUseWikiEditor' => array(
-		'default' => true,
+		'default' => false, // Do not enable. -John
 	),
 
 	// Files
@@ -380,29 +354,12 @@ $wgConf->settings = array(
 			NS_EVENT => 'Event',
 			NS_EVENT_TALK => 'Event_talk',
 			NS_CLAN => 'Clan',
-			NS_CLAN_TALK => 'Clan_talk',
-			NS_POE => 'PoE',
-			NS_POE_TALK => 'PoE_talk',
-			NS_LEAGUE => 'League',
-			NS_LEAGUE_TALK => 'League_talk',
-			NS_SMITE => 'Smite',
-			NS_SMITE_TALK => 'Smite_talk'
+			NS_CLAN_TALK => 'Clan_talk'
 		),
 	),
 	'wgContentNamespaces' => array(
 		'default' => array( NS_MAIN ),
-		'quantixwiki' => array( NS_MAIN, NS_HL2RP, NS_ARP, NS_EVENT, NS_CLAN, NS_POE, NS_LEAGUE, NS_SMITE ),
-	),
-
-	// OAuth
-	'wgMWOAuthCentralWiki' => array(
-		'default' => 'metawiki',
-	),
-	'wgMWOAuthSharedUserSource' => array(
-		'default' => 'CentralAuth',
-	),
-	'wgMWOAuthSecureTokenTransfer' => array(
-		'default' => true,
+		'quantixwiki' => array( NS_MAIN, NS_HL2RP, NS_ARP, NS_EVENT, NS_CLAN ),
 	),
 
 	// Permissions
@@ -418,13 +375,7 @@ $wgConf->settings = array(
 				'autopatrolled',
 				'confirmed',
 				'member',
-				'rollbacker',
 				'skipcaptcha',
-			),
-		),
-		'+dpwiki' => array(
-			'bureaucrat' => array(
-				'respected',
 			),
 		),
 		'+quantixwiki' => array(
@@ -462,7 +413,6 @@ $wgConf->settings = array(
 			'consul' => array(
 				'bot',
 				'bureaucrat',
-				'consul',
 			),
 		),
 	),
@@ -476,10 +426,6 @@ $wgConf->settings = array(
 			'autopatrolled' => array(
 				'autopatrol' => true,
 				'patrol' => true,
-			),
-			'autoconfirmed' => array(
-				'mwoauthproposeconsumer' => true,
-				'mwoauthupdateownconsumer' => true,
 			),
 			'bureaucrat' => array(
 				'renameuser' => false,
@@ -501,9 +447,6 @@ $wgConf->settings = array(
 				'suppressionlog' => true,
 				'suppressrevision' => true,
 			),
-			'rollbacker' => array(
-				'rollback' => true,
-			),
 			'skipcaptcha' => array(
 				'skipcaptcha' => true,
 			),
@@ -513,19 +456,11 @@ $wgConf->settings = array(
 				'abusefilter-revert' => true,
 				'deletelogentry' => true,
 				'deleterevision' => true,
+				'massmessage' => false,
 				'rollback' => true,
 			),
 			'user' => array(
-				'user' => true, // for "Allow logged in users" protection level
-			),
-		),
-		'+dpwiki' => array(
-			'bureaucrat' => array(
-				'bureaucrat' => true,
-				'respected' => true,
-			),
-			'respected' => array(
-				'respected' => true,
+				'user' => true, //for "Allow logged in users" protection level
 			),
 		),
 		'+metawiki' => array(
@@ -539,9 +474,6 @@ $wgConf->settings = array(
 				'noratelimit' => true,
 				'userrights' => true,
 				'userrights-interwiki' => true,
-			),
-			'sysop' => array(
-				'interwiki' => true,
 			),
 			'wikicreator' => array(
 				'createwiki' => true,
@@ -582,7 +514,7 @@ $wgConf->settings = array(
 			),
 			'consul' => array(
 				'read' => true,
-				'consul' => true,
+				'consul' = true,
 			),
 		),
 	),
@@ -603,13 +535,7 @@ $wgConf->settings = array(
 				'autopatrolled',
 				'confirmed',
 				'member',
-				'rollbacker',
 				'skipcaptcha',
-			),
-		),
-		'+dpwiki' => array(
-			'bureaucrat' => array(
-				'respected',
 			),
 		),
 		'+quantixwiki' => array(
@@ -638,7 +564,6 @@ $wgConf->settings = array(
 			'superadmin' => array(
 				'admin',
 			),
-		),
 		'+testwiki' => array(
 			'bureaucrat' => array(
 				'testgroup',
@@ -663,16 +588,12 @@ $wgConf->settings = array(
 		'default' => array(
 			'user',
 		),
-		'+dpwiki' => array(
-			'bureaucrat',
-			'respected',
-		),
-		'+quantixwiki' => array(
+		'quantixwiki' => array(
 			'bureaucrat',
 			'coder',
 			'owner',
 		),
-		'+testwiki' => array(
+		'testwiki' => array(
 			'bureaucrat',
 		),
 	),
@@ -715,23 +636,12 @@ $wgConf->settings = array(
 	),
 
 	// Style
-	'wgAppleTouchIcon' => array(
-		'default' => '/apple-touch-icon.png',
-	),
-	'wgCentralAuthLoginIcon' => array(
-		'default' => '/usr/share/nginx/favicons/default.ico',
-	),
 	'wgDefaultSkin' => array(
 		'default' => 'vector',
 	),
-	'wgFavicon' => array(
-		'default' => '/favicon.ico',
-	),
 	'wgLogo' => array(
 		'default' => "//$wmgUploadHostname/metawiki/3/35/Miraheze_Logo.svg",
-		'mafiawiki' => "//$wmgUploadHostname/mafiawiki/a/a6/Header.png",
 		'spiralwiki' => '//upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Spiral_project_logo.svg/135px-Spiral_project_logo.svg.png',
-		'testwiki' => "//$wmgUploadHostname/testwiki/9/99/Mirahezetestwiki.png",
 	),
 
 	// Timezone
@@ -836,22 +746,11 @@ foreach ( $wmgClosedDatabasesList as $database ) {
 	$wgConf->settings['wmgClosedWiki'][$database] = true;
 }
 
-if ( !in_array( $wgDBname, $wgLocalDatabases ) ) {
-	header( "HTTP/1.0 404 Not Found" );
-	echo <<<EOF
-	<center><h1>404 Wiki Not Found</h1></center>
-	<hr>
-	<center>nginx - MediaWiki</center>
-EOF;
-	die( 1 );
-}
-
 require_once( "/srv/mediawiki/config/GlobalLogging.php" );
 require_once( "/srv/mediawiki/config/RedisConfig.php" );
 
-// Hard overrides that don't work when set in $wgConf->settings
+// wgGroupPermissions which don't work when set in $wgConf->settings
 $wgGroupPermissions['bureaucrat']['userrights'] = false;
-$wgGroupPermissions['sysop']['bigdelete'] = false;
 
 // Needs to be set AFTER $wgDBname is set to a correct value
 $wgUploadDirectory = "/srv/mediawiki-static/$wgDBname";
@@ -909,25 +808,11 @@ if ( isset( $wgCentralAuthAutoLoginWikis[$wmgHostname] ) ) {
 
 require_once( "/srv/mediawiki/config/LocalExtensions.php" );
 
-# Timeline
-putenv( "GDFONTPATH=/usr/share/fonts/truetype/freefont" );
-$wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
-$wgTimelineSettings->perlCommand = "/usr/bin/perl";
-$wgTimelineSettings->fontFile = 'FreeSans';
-
-# ReCaptcha
 $wgCaptchaClass = 'ReCaptchaNoCaptcha';
 $wgReCaptchaSendRemoteIP = false; // Don't send users' IPs
 
-# ircrcbot
-if ( !isset( $wgConf->settings['wmgPrivateWiki'][$wgDBname] ) ) {
-        $wgRCFeeds['irc'] = array(
-                'formatter' => 'MirahezeIRCRCFeedFormatter',
-                'uri' => 'udp://185.52.1.76:5070',
-                'add_interwiki_prefix' => false,
-                'omit_bots' => true,
-        );
-}
+// Hard overrides
+$wgGroupPermissions['sysop']['bigdelete'] = false;
 
 $wgHooks['SkinAfterBottomScripts'][] = 'piwikScript';
 function piwikScript( $skin, &$text = '' ) {
@@ -965,3 +850,13 @@ function piwikScript( $skin, &$text = '' ) {
 SCRIPT;
 		return true;
 }
+
+if ( !in_array( $wgDBname, $wgLocalDatabases ) ) {
+	header( "HTTP/1.0 404 Not Found" );
+	echo <<<EOF
+	<center><h1>404 Wiki Not Found</h1></center>
+	<hr>
+	<center>nginx - MediaWiki</center>
+EOF;
+	die( 1 );
+} 
