@@ -3,6 +3,7 @@
  * Number of wikis(SiteMatrix)
 
 class NumberOfWikis {
+
 	public static function assignValue( &$parser, &$cache, &$magicWordId, &$ret ) {
 		global $wgMemc;
 		if ( $magicWordId == 'NUMBEROFWIKIS' ) {
