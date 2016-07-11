@@ -22,7 +22,6 @@ class NumberOfWikis {
 				$res = $dbr->select(
 					'cw_wikis',
 					'COUNT(*) AS count',
-					array( 'wl_deleted' => 0 ), // ignore deleted wikis as per Jedimca0
 					__METHOD__
 				);
 				wfDebugLog( 'Number Of Wikis', 'Got the amount of wikis from DB' );
