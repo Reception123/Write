@@ -1,0 +1,4 @@
+[submodule "submodules/CheckUser"]
+	path = submodules/CheckUser
+	url = https://github.com/wikimedia/mediawiki-extensions-CheckUser
+	branch = master
