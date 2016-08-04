@@ -1,0 +1,4 @@
+[submodule "ExtesnionsSubmoduleTest"]
+	path = ExtesnionsSubmoduleTest
+	url = https://github.com/Reception123/ExtesnionsSubmoduleTest
+	branch = master
