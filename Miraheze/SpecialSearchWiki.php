@@ -106,30 +106,4 @@ class SpecialSearchWiki extends SpecialPage {
 			$this->processRequestStatusChanges( $par );
 		}
 	}
-
-	function processRequestStatusChanges( $id ) {
-		$request = $this->getRequest();
-		$user = $this->getUser();
-
-		if ( !$user->isAllowed( 'createwiki' ) ) {
-			throw new MWException( 'User without createwiki right tried to modify wiki creator comment' );
-		}
-
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->update( 'cw_requests',
-			array(
-				'cw_status' => $request->getVal( 'rwqStatus' ),
-				'cw_status_comment' => $request->getVal( 'rwqStatusComment' ),
-				'cw_status_comment_timestamp' => $dbw->timestamp(),
-				'cw_status_comment_user' => $user->getId()
-			), array(
-				'cw_id' => $id
-			),
-			__METHOD__
-		);
-
-		$this->getRequest()->response()->header( 'Refresh: 1;' );
-
-		return true;
-	}
 }
