@@ -23,12 +23,6 @@ class SpecialSearchWiki extends SpecialPage {
 		$localpage = $this->getPageTitle()->getLocalUrl();
 		$searchConds = false;
 
-		$type = $request->getVal( 'wSearchtype' );
-		$target = $request->getVal( 'target' );
-		$year = $request->getIntOrNull( 'year' );
-		$month = $request->getIntOrNull( 'month' );
-		$search = $request->getVal( 'wSearch' );
-
 		if ( $type === 'sitename' ) {
 			$searchConds = array( 'cw_sitename' => $search );
 		} elseif ( $type === 'dbname' ) {
@@ -50,7 +44,6 @@ class SpecialSearchWiki extends SpecialPage {
 		# TODO: Should be escaped against HTML, but should NOT escape $selecttypeform
 		$form .= '<tr><td>Find wiki requests where the ' . $selecttypeform . ' is ';
 		$form .= Xml::input( 'wSearch', 40, '' ) . '</td></tr>';
-		$form .= '<tr><td>' . Xml::dateMenu( $year, $month ) . '</td>';
 		$form .= '<td>' . Xml::submitButton( $this->msg( 'requestwikiqueue-searchbutton' )->escaped() ) . '</td></tr>';
                 $form .= Xml::closeElement( 'table' );
                 $form .= '</fieldset>';
@@ -58,7 +51,7 @@ class SpecialSearchWiki extends SpecialPage {
 
 		$out->addHTML( $form );
 
-		$pager = new SearchWikiPager( $this, $searchConds, $year, $month );
+		$pager = new SearchWikiPager( $this, $searchConds );
 		$out->addHTML(
 			$pager->getNavigationBar() .
 			$pager->getBody() .
