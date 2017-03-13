@@ -1,7 +1,7 @@
 <?php
 class SpecialSearchWiki extends SpecialPage {
 	function __construct() {
-		parent::__construct( 'RequestWikiQueue' );
+		parent::__construct( 'SearchWiki' );
 	}
 
 	function execute( $par ) {
@@ -42,7 +42,7 @@ class SpecialSearchWiki extends SpecialPage {
     }
     
 
-		$selecttypeform = "<select name=\"wSearchtype\"><option value=\"requester\">requester</option><option value=\"sitename\">sitename</option><option value=\"status\">status</option><option value=\"dbname\">dbname</option></select>";
+		$selecttypeform = "<select name=\"wSearchtype\"><option value=\"requester\">requester</option><option value=\"sitename\">sitename</option><option value=\"status\">status</option><option value=\"dbname\">dbname</option><option value=\"dbname\">language</option><option value=\"dbname\">closed (1 or 0)</option></select>";
 
 		$form = Xml::openElement( 'form', array( 'action' => $localpage, 'method' => 'get' ) );
                 $form .= '<fieldset><legend>' . $this->msg( 'requestwikiqueue-searchrequest' )->escaped() . '</legend>';
