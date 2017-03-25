@@ -30,9 +30,9 @@ class SpecialSearchWiki extends SpecialPage {
 		} elseif ( $type === 'status' ) {
 			$searchConds = array( 'cw_status' => $search );
 		} elseif ( $type === 'language' ) {
-      $searchConds = array( 'cw_language' => $search );
-    } elseif ( $type === 'closed' ) {
-      $searchConds = array( 'cw_closed' => $search );
+      			$searchConds = array( 'cw_language' => $search );
+  		  } elseif ( $type === 'closed' ) {
+    			$searchConds = array( 'cw_closed' => $search );
     }
     
 
@@ -42,7 +42,7 @@ class SpecialSearchWiki extends SpecialPage {
                 $form .= '<fieldset><legend>' . $this->msg( 'requestwikiqueue-searchrequest' )->escaped() . '</legend>';
                 $form .= Xml::openElement( 'table' );
 		# TODO: Should be escaped against HTML, but should NOT escape $selecttypeform
-		$form .= '<tr><td>Find wiki requests where the ' . $selecttypeform . ' is ';
+		$form .= '<tr><td>Find wikis where the ' . $selecttypeform . ' is ';
 		$form .= Xml::input( 'wSearch', 40, '' ) . '</td></tr>';
 		$form .= '<td>' . Xml::submitButton( $this->msg( 'requestwikiqueue-searchbutton' )->escaped() ) . '</td></tr>';
                 $form .= Xml::closeElement( 'table' );
@@ -62,21 +62,14 @@ class SpecialSearchWiki extends SpecialPage {
 	function lookupRequest( $par ) {
 		$dbr = wfGetDB( DB_SLAVE );
 
-		$res = $dbr->selectRow( 'cw_requests',
+		$res = $dbr->selectRow( 'cw_wikis',
 			array(
-				'cw_user',
-				'cw_comment',
-				'cw_dbname',
-				'cw_language',
-				'cw_private',
-				'cw_sitename',
-				'cw_status',
-				'cw_status_comment',
-				'cw_status_comment_user',
-				'cw_status_comment_timestamp',
-				'cw_timestamp',
-				'cw_url',
-				'cw_user'
+				'wiki_dbname',
+				'wiki_sitename',
+				'wiki_language',
+				'wiki_private',
+				'wiki_closed',
+				'wik_settings',
 			),
 			array(
 				'cw_id' => $par
